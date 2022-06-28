@@ -1,12 +1,17 @@
 package com.example.demo.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Users implements Serializable{
@@ -15,12 +20,18 @@ public class Users implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	
 	private String name;
 	private String email;
 	private String phone;
 	private String password;
 	
-	public Users () {
+	//@JsonIgnore
+	@OneToMany(mappedBy="client")
+	private List<Orders> orders = new ArrayList<>();
+	
+	
+	public Users() {
 		
 	}
 	
@@ -71,6 +82,10 @@ public class Users implements Serializable{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public List<Orders> getOrders() {
+		return orders;
 	}
 
 	@Override
