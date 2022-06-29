@@ -14,29 +14,26 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Users implements Serializable{
+public class Users implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
 	private String name;
 	private String email;
 	private String phone;
 	private String password;
 	
-	//@JsonIgnore
-	@OneToMany(mappedBy="client")
+	@JsonIgnore
+	@OneToMany(mappedBy = "client")
 	private List<Orders> orders = new ArrayList<>();
 	
-	
 	public Users() {
-		
 	}
-	
+
 	public Users(Long id, String name, String email, String phone, String password) {
-		
+		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -84,13 +81,17 @@ public class Users implements Serializable{
 		this.password = password;
 	}
 
+
 	public List<Orders> getOrders() {
 		return orders;
 	}
-
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
 	}
 
 	@Override
@@ -102,13 +103,11 @@ public class Users implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Users other = (Users) obj;
-		return Objects.equals(id, other.id);
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", password=" + password
-				+ "]";
-	}
-	
 }
